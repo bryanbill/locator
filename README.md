@@ -16,3 +16,38 @@ This will start a development server on port 8080. You can then access the appli
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```mermaid
+graph TD
+  subgraph HTML
+    index.html
+    style.css
+  end
+
+  subgraph JavaScript
+    index.js
+    sw.js
+  end
+
+  subgraph External_Libraries
+    OpenLayers
+  end
+
+  subgraph IndexedDB
+    IDB
+  end
+
+  subgraph Service_Worker
+    sw.js
+  end
+
+  index.js --> OpenLayers
+  index.js --> IDB
+  index.js --> sw.js
+  sw.js --> IndexedDB
+
+  style.css --> index.html
+  index.js --> index.html
+  OpenLayers --> index.html
+  sw.js --> index.html
+```
