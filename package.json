@@ -1,0 +1,19 @@
+{
+  "name": "locator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite --host"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "idb": "^8.0.0",
+    "ol": "^8.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.11"
+  }
+}
