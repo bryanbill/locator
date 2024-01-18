@@ -1,0 +1,31 @@
+@import url("./node_modules/ol/ol.css");
+@import url("https://use.fontawesome.com/releases/v5.0.13/css/all.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+button {
+  background-color: #000;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 18px;
+  border: none;
+  border-radius: 100%;
+  color: aliceblue;
+}
