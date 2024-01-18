@@ -1,0 +1,18 @@
+# Locator - An OpenLayers live location tracker
+
+This is a simple OpenLayers application that tracks the location of a device, and displays it on a map. It is intended to be used as a demonstration of the [OpenLayers](https://openlayers.org/) library.
+
+## Usage
+
+TO run this application, you will need to have [Node.js](https://nodejs.org/en/) installed. Then, run the following commands:
+
+```bash
+npm install
+npm run dev
+```
+
+This will start a development server on port 8080. You can then access the application at <<http://localhost:5173>>.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
