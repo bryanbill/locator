@@ -1,0 +1,62 @@
+@import url("../node_modules/ol/ol.css");
+@import url("https://use.fontawesome.com/releases/v5.0.13/css/all.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+button[type="button"] {
+  background-color: #000;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 18px;
+  border: none;
+  border-radius: 100%;
+  color: aliceblue;
+}
+
+input[type="date"] {
+  padding: 10px;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.controls {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 4px;
+  top: 10px;
+  left: 10px;
+  padding: 10px;
+  max-width: 300px;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    width: 300px;
+    max-width: 250px;
+  }
+}
