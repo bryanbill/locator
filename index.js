@@ -1,8 +1,8 @@
 import { Map, View, Feature } from "ol";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
-import { transform } from "ol/proj";
 import { OSM, Vector as VectorSource } from "ol/source";
 import { Point, LineString } from "ol/geom";
+import { Geolocation } from 'ol'
 
 /**
  * @type {Map}
@@ -14,13 +14,18 @@ let map;
  */
 let view;
 
+let coords = [];
 
-let coordinates = [];
+const accuracyFt = new Feature();
+
+const positionFeature = new Feature();
+
+const pathFeature = new Feature();
 
 /**
- * @type {VectorLayer}
+ * @type {Geolocation}
  */
-let markerLayer;
+let geolocation;
 
 
 const init = () => {
@@ -35,9 +40,26 @@ const init = () => {
         layers: [
             new TileLayer({
                 source: new OSM(),
-            })
+            }),
+            new VectorLayer({
+                source: new VectorSource({
+                    features: [pathFeature],
+                }),
+            }),
+            new VectorLayer({
+                source: new VectorSource({
+                    features: [accuracyFt, positionFeature],
+                }),
+            }),
         ],
         view: view,
+    });
+
+    geolocation = new Geolocation({
+        trackingOptions: {
+            enableHighAccuracy: true,
+        },
+        projection: view.getProjection(),
     });
 
     document.getElementById("locate").addEventListener("click", (e) => {
@@ -46,63 +68,33 @@ const init = () => {
     });
 };
 
-const addMarker = (coord) => {
-    if (coordinates.length < 2 || !markerLayer) {
-        markerLayer = new VectorLayer({
-            source: new VectorSource({
-                features: [
-                    new Feature({
-                        geometry: new Point(coord),
-                    }),
-                ],
-            }),
+const locate = () => {
+    geolocation.setTracking(true);
+
+    geolocation.on("change:position", () => {
+        const coordinates = geolocation.getPosition();
+        coords.push(coordinates);
+
+        positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
+        view.animate({
+            center: coordinates,
+            zoom: 15,
+            duration: 1000,
         });
 
-        map.addLayer(markerLayer);
-    } else {
-        markerLayer.getSource().clear();
-        markerLayer.getSource().addFeature(
-            new Feature({
-                geometry: new Point(coord),
-            })
-        );
-
-        markerLayer.getSource().addFeature(
-            new Feature({
-                geometry: new LineString(coordinates),
-            })
-        );
-    }
-
-    view.animate({
-        duration: 2000,
-        center: coord,
-        zoom: 18,
+        drawPath();
     });
-}
+
+    geolocation.on("change:accuracyGeometry", () => {
+        accuracyFt.setGeometry(geolocation.getAccuracyGeometry());
+    })
+
+    geolocation.on("error", console.error);
+};
 
 
-const locate = () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(
-            (position) => {
-                let { latitude, longitude } = position.coords;
-                const coords = transform(
-                    [longitude, latitude],
-                    "EPSG:4326",
-                    "EPSG:3857"
-                );
-                coordinates.push(coords);
-
-                addMarker(coordinates[coordinates.length - 1]);
-            },
-            console.error,
-            {
-                enableHighAccuracy: true,
-                maximumAge: 5,
-            }
-        );
-    }
+const drawPath = () => {
+    pathFeature.setGeometry(new LineString(coords));
 };
 
 window.onload = init;
