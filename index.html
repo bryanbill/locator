@@ -14,7 +14,11 @@
         <i class="fas fa-location-arrow"></i>
     </button>
 
-    <div class="controls gap-1">
+    <button type="button" id="menu" title="Menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="controls gap-1" id="controls">
         <h4>
             Filters
         </h4>
@@ -22,20 +26,37 @@
             <label for="start">
                 Start
             </label>
-            <input id="start" type="date" placeholder="Select Start Date" />
+            <input id="start" type="datetime-local" placeholder="Select Start Date" />
         </div>
 
         <div>
             <label for="end">
                 End
             </label>
-            <input id="end" type="date" placeholder="Select End Date" />
+            <input id="end" type="datetime-local" placeholder="Select End Date" />
         </div>
         <hr />
         <br />
     </div>
 
+    <dialog id="dialog">
+        <div class="dialog-header">
+            <h4>
+                <span id="dialog-title"></span>
+                <button type="button" id="close-dialog" title="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </h4>
+        </div>
+        <div class="dialog-body">
+            <div id="dialog-content"></div>
+        </div>
+    </dialog>
+
     <script type="module" crossorigin src="./src/index.js"></script>
 </body>
+
+<!-- Attributions-->
+<!-- <a href="https://www.flaticon.com/free-icons/person-standing" title="person-standing icons">Person-standing icons created by Smashicons - Flaticon</a> -->
 
 </html>

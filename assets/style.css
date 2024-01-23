@@ -19,7 +19,7 @@ body {
   width: 100%;
 }
 
-button[type="button"] {
+#locate {
   background-color: #000;
   position: absolute;
   bottom: 20px;
@@ -30,12 +30,26 @@ button[type="button"] {
   color: aliceblue;
 }
 
-input[type="date"] {
+#menu {
+  position: absolute;
+  top: 80px;
+  left: 8px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+
+#menu:hover {
+  border-color: #000 !important;
+}
+
+input {
   padding: 10px;
   border-radius: 4px;
   outline: none;
   width: 100%;
   margin-bottom: 10px;
+  background-color: #fff;
 }
 
 .controls {
@@ -44,14 +58,49 @@ input[type="date"] {
   flex-direction: column;
   background-color: #fff;
   border-radius: 4px;
-  top: 10px;
+  top: 120px;
   left: 10px;
   padding: 10px;
   max-width: 300px;
+  animation: slide-in 0.5s ease-in-out;
+}
+
+.animate-out {
+  animation: slide-out 0.5s ease-in-out;
 }
 
 .gap-1 {
   gap: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.slide-in {
+  animation: slide-in 0.5s ease-in-out;
+}
+
+.slide-out {
+  animation: slide-out 0.5s ease-in-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 @media (max-width: 768px) {

@@ -2,9 +2,10 @@ import { Map, View, Feature, Geolocation } from "ol";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import { OSM, Vector as VectorSource } from "ol/source";
 import { Point, LineString } from "ol/geom";
-import { Style, Stroke, Fill, Text } from "ol/style";
+import { Style, Stroke, Icon } from "ol/style";
 
-import { save, get } from "./db";
+import { save, get, Relations } from "./db";
+import man from "../assets/icons/man.png";
 
 /**
  * @type {Map}
@@ -37,7 +38,6 @@ const init = () => {
         center: [0, 0],
         zoom: 2,
     });
-
 
     map = new Map({
         target: "map",
@@ -78,8 +78,9 @@ const init = () => {
     });
 
     get(Date.now() - 1000 * 60 * 60 * 24, Date.now()).then((result) => {
+        if (!result || !result.length) return;
+        
         coords.push(...result);
-
         drawPath();
     });
 };
@@ -92,9 +93,16 @@ const locate = () => {
         coords.push(coordinates);
 
         positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
+        positionFeature.setStyle(new Style({
+            image: new Icon({
+                src: man,
+                anchor: [0.5, 1],
+            })
+        }));
+
         view.animate({
             center: coordinates,
-            zoom: 15,
+            zoom: 20,
             duration: 1000,
         });
 
@@ -103,6 +111,11 @@ const locate = () => {
     });
 
     geolocation.on("change:accuracyGeometry", () => {
+        const accuracy = geolocation.getAccuracy();
+        const speed = geolocation.getSpeed();
+        const coords = geolocation.getAccuracyGeometry().getCoordinates();
+        save(coords, { accuracy, speed, type: "Polygon" }, Relations.accuracy);
+
         accuracyFt.setGeometry(geolocation.getAccuracyGeometry());
     })
 
@@ -113,20 +126,9 @@ const locate = () => {
 const drawPath = () => {
     pathFeature.setGeometry(new LineString(coords));
     pathFeature.setStyle(new Style({
-        text: new Text({
-            text: "Last known position",
-            offsetY: 25,
-            fill: new Fill({
-                color: "#000",
-            }),
-            stroke: new Stroke({
-                color: "#fff",
-                width: 2,
-            }),
-        }),
         stroke: new Stroke({
             color: "#ffcc33",
-            width: 5,
+            width: 10,
         }),
     }));
 
@@ -140,18 +142,21 @@ const drawPath = () => {
 };
 
 const filterTool = () => {
-    const startBtn = document.getElementById("start");
-    const endBtn = document.getElementById("end");
+    const startInput = document.getElementById("start");
+    const endInput = document.getElementById("end");
 
     let start;
     let end;
 
-    startBtn.addEventListener("change", (e) => {
-        start = new Date(e.target.value);
+    startInput.addEventListener("change", (e) => {
+        start = new Date(e.target.value).getTime();
 
-        console.log(start);
 
         if (end) {
+            if (start > end) {
+                alert("Start date must be before end date");
+                return;
+            }
             get(start, end).then((result) => {
                 coords = result;
 
@@ -161,10 +166,10 @@ const filterTool = () => {
         }
     })
 
-    endBtn.addEventListener("change", (e) => {
-        end = new Date(e.target.value).getTime() - new Date(e.target.value).getTimezoneOffset() * 60 * 1000;
+    endInput.addEventListener("change", (e) => {
+        end = new Date(e.target.value).getTime();
 
-        if (start) {
+        if (start && (start < end)) {
             get(start, end).then((result) => {
                 coords = result;
                 console.log(coords);
