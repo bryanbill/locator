@@ -14,7 +14,22 @@ body {
   scroll-behavior: smooth;
 }
 
+dialog {
+  min-width: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  border: none;
+  padding: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  animation: pop-in 0.5s ease-in-out;
+}
+
 #map {
+  position: relative;
   height: 100%;
   width: 100%;
 }
@@ -24,10 +39,11 @@ body {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  padding: 18px;
+  padding: 16px;
   border: none;
   border-radius: 100%;
   color: aliceblue;
+  z-index: 9999;
 }
 
 #menu {
@@ -37,6 +53,7 @@ body {
   padding: 10px;
   border-radius: 4px;
   border: 1px solid transparent;
+  z-index: 9999;
 }
 
 #menu:hover {
@@ -63,10 +80,26 @@ input {
   padding: 10px;
   max-width: 300px;
   animation: slide-in 0.5s ease-in-out;
+  z-index: 9999;
 }
 
-.animate-out {
-  animation: slide-out 0.5s ease-in-out;
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.actions > #content {
+  flex: 1;
+}
+
+.actions > #close {
+  padding: 4px 8px 4px 8px;
+  border-radius: 4px;
+  background-color: rgb(232, 102, 102);
+  color: #fff;
 }
 
 .gap-1 {
@@ -77,12 +110,38 @@ input {
   display: none;
 }
 
-.slide-in {
+.animate-slide-in {
   animation: slide-in 0.5s ease-in-out;
 }
 
-.slide-out {
+.animate-slide-out {
   animation: slide-out 0.5s ease-in-out;
+}
+
+.animate-pop-in {
+  animation: pop-in 0.5s ease-in-out;
+}
+
+.animate-pop-out {
+  animation: pop-out 0.5s ease-in-out;
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes slide-in {

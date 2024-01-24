@@ -8,48 +8,50 @@
 </head>
 
 <body>
-    <div id="map"></div>
+    <div id="map">
+        <button type="button" id="locate" title="Locate">
+            <i class="fas fa-location-arrow"></i>
+        </button>
 
-    <button type="button" id="locate" title="Locate">
-        <i class="fas fa-location-arrow"></i>
-    </button>
+        <button type="button" id="menu" title="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
 
-    <button type="button" id="menu" title="Menu">
-        <i class="fas fa-bars"></i>
-    </button>
+        <div class="controls gap-1 hidden animate-slide-out" id="controls">
+            <h4>
+                Filters
+            </h4>
+            <div>
+                <label for="start">
+                    Start
+                </label>
+                <input id="start" type="datetime-local" placeholder="Select Start Date" />
+            </div>
 
-    <div class="controls gap-1" id="controls">
-        <h4>
-            Filters
-        </h4>
-        <div>
-            <label for="start">
-                Start
-            </label>
-            <input id="start" type="datetime-local" placeholder="Select Start Date" />
+            <div>
+                <label for="end">
+                    End
+                </label>
+                <input id="end" type="datetime-local" placeholder="Select End Date" />
+            </div>
+            <hr />
+            <br />
+
         </div>
 
-        <div>
-            <label for="end">
-                End
-            </label>
-            <input id="end" type="datetime-local" placeholder="Select End Date" />
-        </div>
-        <hr />
-        <br />
+
     </div>
 
-    <dialog id="dialog">
-        <div class="dialog-header">
-            <h4>
-                <span id="dialog-title"></span>
-                <button type="button" id="close-dialog" title="Close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </h4>
+    <dialog id="dialog" class="hidden">
+        <div id="title"></div>
+        <div id="content">
+
         </div>
-        <div class="dialog-body">
-            <div id="dialog-content"></div>
+        <br>
+        <div class="actions">
+            <button type="button" id="close" class="btn btn-primary">
+                Close
+            </button>
         </div>
     </dialog>
 
